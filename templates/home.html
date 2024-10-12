@@ -1,0 +1,137 @@
+{% extends 'base.html' %} 
+{% block content %}
+
+<div class="container">
+    <div class="logout-link">
+        <a href="{{ url_for('logout') }}">Logout</a>
+    </div>
+
+    <div class="chat-entry">
+        <h3>Enter The Chat Room</h3>
+        <form method="post" class="buttons">
+            <div>
+                <label>Name:</label>
+                <input
+                type="text"
+                placeholder="Pick a name!"
+                name="name"
+                value="{{name}}"
+                />
+            </div>
+            <div class="join">
+                <input type="text" placeholder="Room Code" name="code" value="{{code}}" />
+                <button type="submit" name="join">Join a Room</button>
+            </div>
+            <button type="submit" name="create" class="create-btn">Create a Room</button>
+            {% if error %}
+            <ul>
+                <li class="error">{{error}}</li>
+            </ul>
+            {% endif %}
+        </form>
+    </div>
+
+    <div class="history-container">
+        <h3>Your Chat History</h3>
+        <div class="room-list">
+            {% for user_room in user_rooms %}
+            <a href="{{ url_for('room', code=user_room.room.code) }}" class="room-box">
+                <h4>Room: {{ user_room.room.code }}</h4>
+                <p>Last visited: {{ user_room.last_visited.strftime('%Y-%m-%d %H:%M:%S') }}</p>
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<style>
+    .container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+        font-family: Arial, sans-serif;
+    }
+    .logout-link {
+        text-align: right;
+        margin-bottom: 20px;
+    }
+    .logout-link a {
+        color: #007bff;
+        text-decoration: none;
+    }
+    .chat-entry {
+        background-color: #f8f9fa;
+        border-radius: 10px;
+        padding: 20px;
+        margin-bottom: 20px;
+    }
+    .chat-entry h3 {
+        margin-top: 0;
+        color: #343a40;
+    }
+    .buttons input[type="text"] {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 10px;
+        border: 1px solid #ced4da;
+        border-radius: 5px;
+    }
+    .buttons button {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    .buttons button:hover {
+        background-color: #0056b3;
+    }
+    .create-btn {
+        background-color: #28a745 !important;
+    }
+    .create-btn:hover {
+        background-color: #218838 !important;
+    }
+    .error {
+        color: #dc3545;
+    }
+    .history-container {
+        background-color: #f8f9fa;
+        border-radius: 10px;
+        padding: 20px;
+    }
+    .history-container h3 {
+        margin-top: 0;
+        color: #343a40;
+    }
+    .room-list {
+        max-height: 300px;
+        overflow-y: auto;
+    }
+    .room-box {
+        display: block;
+        background-color: #ffffff;
+        border: 1px solid #dee2e6;
+        border-radius: 5px;
+        padding: 10px;
+        margin-bottom: 10px;
+        text-decoration: none;
+        color: #212529;
+        transition: background-color 0.3s;
+    }
+    .room-box:hover {
+        background-color: #e9ecef;
+    }
+    .room-box h4 {
+        margin: 0 0 5px 0;
+        color: #007bff;
+    }
+    .room-box p {
+        margin: 0;
+        font-size: 0.8em;
+        color: #6c757d;
+    }
+</style>
+
+{% endblock %}
